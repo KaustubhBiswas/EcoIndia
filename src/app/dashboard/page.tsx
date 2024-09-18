@@ -1,5 +1,6 @@
 'use client';
 
+import { DarkThemeAiChatbot } from "@/components/dark-theme-ai-chatbot";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
@@ -139,6 +140,7 @@ export default function Dashboard() {
             Export Data
           </Button>
         </div>
+        <DarkThemeAiChatbot />
       </main>
     </div>
   )
