@@ -1,12 +1,13 @@
 'use client';
 
+import { DarkThemeAiChatbot } from "@/components/dark-theme-ai-chatbot";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { useUser } from "@/contexts/usercontext";
 import { Bell, Calendar, ChevronDown, LogOut, Mail, Menu, Settings } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 const data = [
@@ -24,12 +25,27 @@ export default function Dashboard() {
   const { user, setUser } = useUser();
   const router = useRouter();
 
+  useEffect(() => {
+    //check if user data is stored in local storage
+    const storedUser = localStorage.getItem('user');
+    if (storedUser){
+      setUser(JSON.parse(storedUser));  //set user state from local storage
+    }
+    else {
+      //if no user is present in local storage, then redirect to sign in page
+      router.replace('/signin');
+    }
+  }, [setUser, router]);
+
   if (!user) {
     return <p>Loading...</p>;
   }
 
   function signOut(){
-    window.google.accounts.id.disableAutoSelect();
+    if (window.google && window.google.accounts && window.google.accounts.id){
+      window.google.accounts.id.disableAutoSelect();
+    }
+    localStorage.removeItem('user');
     setUser(null);
     router.replace('/signin');
   }
@@ -63,7 +79,7 @@ export default function Dashboard() {
               <div className="flex justify-between items-start">
                 <div className="space-y-1">
                   <h4 className="text-sm font-semibold text-[#00ff9d]">{user?.name}</h4>
-                  <p className="text-sm text-gray-400">Product Manager</p>
+                  <p className="text-sm text-gray-400">Pro Environmentalist</p>
                   <div className="flex items-center pt-2">
                     <Mail className="mr-2 h-4 w-4 opacity-70" />
                     <span className="text-xs text-gray-400">{user?.email}</span>
@@ -139,6 +155,7 @@ export default function Dashboard() {
             Export Data
           </Button>
         </div>
+        <DarkThemeAiChatbot />
       </main>
     </div>
   )

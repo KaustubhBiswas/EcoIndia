@@ -44,6 +44,18 @@ export default function SignIn() {
 
   function handleCredentialResponse(response: any){
     const decodedUser: any = jwtDecode(response.credential);
+
+    //saving the user data in the local storage
+    localStorage.setItem(
+      'user',
+      JSON.stringify({
+        name: decodedUser.name,
+        email: decodedUser.email,
+        imageUrl: decodedUser.picture,
+      })
+    );
+
+
     setUser({
         name: decodedUser.name,
         email: decodedUser.email,
