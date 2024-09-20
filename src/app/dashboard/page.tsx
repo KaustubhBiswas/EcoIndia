@@ -1,5 +1,6 @@
 'use client';
 
+
 import { DarkThemeAiChatbot } from "@/components/dark-theme-ai-chatbot";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,6 +10,7 @@ import { Bell, Calendar, ChevronDown, LogOut, Mail, Menu, Settings } from 'lucid
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import Image from 'next/image';
 
 const data = [
   { name: 'Jan', value: 400 },
@@ -70,7 +72,7 @@ export default function Dashboard() {
           <HoverCard>
             <HoverCardTrigger asChild>
               <Button variant="ghost" className="flex items-center space-x-2">
-                <img src={user?.imageUrl || "/placeholder.svg?height=32&width=32"} className="w-8 h-8 rounded-full" />
+                <img src={user?.imageUrl || "/tree.jpg"} className="w-8 h-8 rounded-full" />
                 <span>{user?.name}</span>
                 <ChevronDown className="h-4 w-4" />
               </Button>
@@ -89,7 +91,7 @@ export default function Dashboard() {
                     <span className="text-xs text-gray-400">Joined December 2021</span>
                   </div>
                 </div>
-                <img src={user?.imageUrl || "/placeholder.svg?height=50&width=50"} className="w-[50px] h-[50px] rounded-full" />
+                <img src={user?.imageUrl || "/tree.jpg"} className="w-[50px] h-[50px] rounded-full" />
               </div>
               <div className="mt-4 pt-4 border-t border-gray-600">
                 <Button variant="destructive" className="w-full bg-red-600 hover:bg-red-700 text-white" onClick={signOut} >
@@ -135,7 +137,7 @@ export default function Dashboard() {
                   <CartesianGrid strokeDasharray="3 3" stroke="#333" />
                   <XAxis dataKey="name" stroke="#ffffff" />
                   <YAxis stroke="#ffffff" />
-                  <Tooltip 
+                  <Tooltip
                     contentStyle={{ backgroundColor: 'black', border: '1px solid rgba(255, 255, 255, 0.1)' }}
                     labelStyle={{ color: '#ffffff' }}
                   />

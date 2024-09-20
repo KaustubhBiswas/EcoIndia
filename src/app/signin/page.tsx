@@ -1,8 +1,10 @@
 "use client";
+import { Button } from '@/components/ui/button';
 import { useUser } from '@/contexts/usercontext';
 import { jwtDecode } from 'jwt-decode';
+import { Leaf } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 
 //client_ID of the google project
@@ -12,6 +14,7 @@ export default function SignIn() {
 
   const {setUser} = useUser();
   const router = useRouter();
+  const googleButtonRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     //Load the Google API script
@@ -33,10 +36,12 @@ export default function SignIn() {
         client_id: CLIENT_ID,
         callback: handleCredentialResponse,
       });
-      window.google.accounts.id.renderButton(
-        document.getElementById('gsi-button') as HTMLElement,
-        { theme: 'outline', size: 'large'}
-      );
+      if (googleButtonRef.current){
+        window.google.accounts.id.renderButton(
+          googleButtonRef.current,
+          { theme: 'outline', size: 'large'}
+        )
+      }
     } else {
       console.error('Google API not loaded');
     }
@@ -68,20 +73,25 @@ export default function SignIn() {
 
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="p-8 bg-white rounded-lg shadow-md">
-        {(
-          <div className="text-center">
-            <img
-              className="w-20 h-20 mx-auto rounded-full"
-            />
-            <h2 className="mt-4 text-xl font-bold"></h2>
-            <p className="text-gray-600"></p>
+    <div className="min-h-screen bg-black text-white flex flex-col">
+      <main className="flex-grow flex flex-col items-center justify-center p-4">
+        <div className="text-center">
+          <div className="flex items-center justify-center mb-6">
+            <Leaf className="h-12 w-12 text-[#00ff9d] mr-2" />
+            <h1 className="text-5xl font-bold text-[#00ff9d]">EcoIndia</h1>
           </div>
-        )} : {(
-          <div id="gsi-button"></div> // This will display the Google Sign-In button
-        )}
-      </div>
+          <p className="text-xl mb-8 max-w-md mx-auto text-gray-300">
+            Empowering India's Green Revolution. Join us in creating a sustainable future.
+          </p>
+        </div>
+        <Button>
+          <div ref={googleButtonRef}></div>
+        </Button>
+      </main>
+
+      <footer className="text-center py-4 text-gray-500 text-sm">
+        <p>Created by syntax_snipers</p>
+      </footer>
     </div>
   );
 
