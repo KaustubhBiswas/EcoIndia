@@ -69,13 +69,13 @@ export default function Dashboard() {
           </Button>
           <HoverCard>
             <HoverCardTrigger asChild>
-              <Button variant="ghost" className="flex items-center space-x-2">
+              <Button variant="ghost" className="flex items-center space-x-2 hover:text-black">
                 <img src={user?.imageUrl || "/placeholder.svg?height=32&width=32"} className="w-8 h-8 rounded-full" />
                 <span>{user?.name}</span>
                 <ChevronDown className="h-4 w-4" />
               </Button>
             </HoverCardTrigger>
-            <HoverCardContent className="w-80 bg-[#2c2d2e] border-none shadow-lg">
+            <HoverCardContent className="w-80 bg-[#2c2d2e] border-none shadow-lg mr-5">
               <div className="flex justify-between items-start">
                 <div className="space-y-1">
                   <h4 className="text-sm font-semibold text-[#00ff9d]">{user?.name}</h4>
