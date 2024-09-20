@@ -36,11 +36,13 @@ export default function SignIn() {
         client_id: CLIENT_ID,
         callback: handleCredentialResponse,
       });
-      if (googleButtonRef.current){
-        window.google.accounts.id.renderButton(
-          googleButtonRef.current,
-          { theme: 'outline', size: 'large'}
-        )
+      if (googleButtonRef.current) {
+        window.google.accounts.id.renderButton(googleButtonRef.current, {
+          theme: 'filled_black', // Dark theme for the button
+          size: 'large',
+          text: 'signin_with', // Google text style
+          shape: 'rectangular', // Adjust shape if needed
+        });
       }
     } else {
       console.error('Google API not loaded');
@@ -98,7 +100,7 @@ export default function SignIn() {
             Empowering India&apos;s Green Revolution. Join us in creating a sustainable future.
           </p>
         </div>
-        <Button>
+        <Button className='bg-black'>
           <div ref={googleButtonRef}></div>
         </Button>
       </main>
