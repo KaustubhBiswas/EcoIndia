@@ -10,7 +10,6 @@ import { Bell, Calendar, ChevronDown, LogOut, Mail, Menu, Settings } from 'lucid
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import Image from 'next/image';
 
 const data = [
   { name: 'Jan', value: 400 },
@@ -71,13 +70,13 @@ export default function Dashboard() {
           </Button>
           <HoverCard>
             <HoverCardTrigger asChild>
-              <Button variant="ghost" className="flex items-center space-x-2">
-                <img src={user?.imageUrl || "/tree.jpg"} className="w-8 h-8 rounded-full" />
+              <Button variant="ghost" className="flex items-center space-x-2 hover:text-black">
+                <img src={user?.imageUrl || "/placeholder.svg?height=32&width=32"} className="w-8 h-8 rounded-full" />
                 <span>{user?.name}</span>
                 <ChevronDown className="h-4 w-4" />
               </Button>
             </HoverCardTrigger>
-            <HoverCardContent className="w-80 bg-[#2c2d2e] border-none shadow-lg">
+            <HoverCardContent className="w-80 bg-[#2c2d2e] border-none shadow-lg mr-5">
               <div className="flex justify-between items-start">
                 <div className="space-y-1">
                   <h4 className="text-sm font-semibold text-[#00ff9d]">{user?.name}</h4>
