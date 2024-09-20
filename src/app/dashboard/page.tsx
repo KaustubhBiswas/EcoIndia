@@ -26,6 +26,8 @@ export default function Dashboard() {
   const { user, setUser } = useUser();
   const router = useRouter();
 
+  const [isActionEnabled, setIsActionEnabled] = useState(false);
+
   useEffect(() => {
     //check if user data is stored in local storage
     const storedUser = localStorage.getItem('user');
@@ -72,7 +74,6 @@ export default function Dashboard() {
             <HoverCardTrigger asChild>
               <Button variant="ghost" className="flex items-center space-x-2 hover:text-black">
                 <img src={user?.imageUrl || "/placeholder.svg?height=32&width=32"} className="w-8 h-8 rounded-full" />
-                <span>{user?.name}</span>
                 <ChevronDown className="h-4 w-4" />
               </Button>
             </HoverCardTrigger>
@@ -145,6 +146,47 @@ export default function Dashboard() {
               </ResponsiveContainer>
             </div>
           </CardContent>
+        </Card>
+
+        {/*Map section*/}
+        <Card className="bg-black border border-white/10 shadow-lg p-6">
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle className="text-xl font-semibold text-[#00ff9d]">Location Overview</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-col md:flex-row gap-6">
+            <div className="flex-grow">
+              <div className="aspect-video w-full">
+                <iframe
+                src="https://mapsplatform.google.com/maps-products/routes/"
+                width="100%"
+                height="100%"
+                style={{border: 0}}
+                allowFullScreen
+                loading="lazy"
+                ></iframe>
+              </div>
+            </div>
+            <div className="flex flex-col justify-center items-center gap-4">
+              <div className="p-4 bg-black-100 text-white rounded-md bold-md">
+                <h2 className="md:text-lg font-bold">Hello</h2>
+                <p>Welcome to our app</p>
+              </div>
+              <div>
+              <Button
+                  className={`w-full px-4 py-2 rounded-md transition-colors ${
+                    isActionEnabled
+                      ? 'bg-red-600 hover:bg-red-700 text-white'
+                      : 'bg-green-600 hover:bg-green-700 text-white'
+                  }`}
+                  onClick={() => setIsActionEnabled(!isActionEnabled)}
+                >
+                  {isActionEnabled ? 'Disable Action' : 'Enable Action'}
+                </Button>
+              </div>
+            </div>
+          </div>
+        </CardContent>
         </Card>
 
         {/* Action Buttons */}
