@@ -7,8 +7,7 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { MessageCircle, X, Send, Bot, User } from 'lucide-react'
-
-
+import { useUser } from '@/contexts/usercontext'
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -17,8 +16,19 @@ const INITIAL_PROMPT = process.env.NEXT_PUBLIC_INITIAL_PROMPT;
 
 export function DarkThemeAiChatbot() {
   const [isOpen, setIsOpen] = useState(false)
+  const {user, setUser} = useUser();
+  
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useEffect(() => {
+    //check if user data is stored in local storage
+    const storedUser = localStorage.getItem('user');
+    if (storedUser){
+      setUser(JSON.parse(storedUser));  //set user state from local storage
+    }
+  },[setUser]);
+
   const [messages, setMessages] = useState([
-    { role: 'model', content: "Hello! I'm your AI assistant. How can I help you today?" }
+    { role: 'model', content: `Hello ${user?.name}! I'm your AI assistant. How can I help you today?` }
   ])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
