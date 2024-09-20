@@ -21,23 +21,37 @@ const data = [
 ]
 
 export default function Dashboard() {
+  const devUrl = process.env.NEXT_PUBLIC_DEV_URL;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const { user, setUser } = useUser();
   const router = useRouter();
 
   useEffect(() => {
-    //check if user data is stored in local storage
-    const storedUser = localStorage.getItem('user');
-    if (storedUser){
-      setUser(JSON.parse(storedUser));  //set user state from local storage
-    }
-    else {
-      //if no user is present in local storage, then redirect to sign in page
-      router.replace('/signin');
-    }
-  }, [setUser, router]);
+    const checkUser = async () => {
+      //check if user data is stored in local storage
+      const storedUser = localStorage.getItem('user');
 
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+
+        const response = await fetch(`${devUrl}/users/checkuser/${user?.email}`, {
+          method: 'GET',
+        });
+        if (response.ok) {
+          console.log("user exists!");
+          router.replace("/dashboard");
+        } else {
+          router.replace("/signin");
+        }
+      } else {
+        //if no user is present in local storage, then redirect to sign in page
+        router.replace('/signin');
+      }
+    };
+    checkUser();
+  }, [setUser, router]);
+  
   if (!user) {
     return <p>Loading...</p>;
   }
@@ -72,7 +86,7 @@ export default function Dashboard() {
             <HoverCardTrigger asChild>
               <Button variant="ghost" className="flex items-center space-x-2 hover:text-black">
                 <img src={user?.imageUrl || "/placeholder.svg?height=32&width=32"} className="w-8 h-8 rounded-full" />
-                <span>{user?.name}</span>
+                {/* <span>{user?.name}</span> */}
                 <ChevronDown className="h-4 w-4" />
               </Button>
             </HoverCardTrigger>

@@ -9,7 +9,7 @@ import { useEffect, useRef } from 'react';
 
 //client_ID of the google project
 const CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-
+const devUrl = process.env.NEXT_PUBLIC_DEV_URL;
 export default function SignIn() {
 
   const {setUser} = useUser();
@@ -47,7 +47,9 @@ export default function SignIn() {
     }
   }
 
-  function handleCredentialResponse(response: any){
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async function handleCredentialResponse(response: any){
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const decodedUser: any = jwtDecode(response.credential);
 
     //saving the user data in the local storage
@@ -68,9 +70,21 @@ export default function SignIn() {
     });
     console.log('Logged in as:', decodedUser.name);
     console.log('User email: ',decodedUser.email);
-    router.replace('/dashboard');
+    try{
+      const response = await fetch(`${devUrl}/users/checkuser/${decodedUser.email}`,{
+        method: 'GET',
+      })
+      if(response.ok){
+        console.log("user exists!")
+        router.replace("/dashboard")
+      } else {
+        router.replace("/onboarding")
+      }
+    }
+    catch(error){
+      console.log("not working!",error);
+    }
   }
-
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col">
@@ -81,7 +95,7 @@ export default function SignIn() {
             <h1 className="text-5xl font-bold text-[#00ff9d]">EcoIndia</h1>
           </div>
           <p className="text-xl mb-8 max-w-md mx-auto text-gray-300">
-            Empowering India's Green Revolution. Join us in creating a sustainable future.
+            Empowering India&apos;s Green Revolution. Join us in creating a sustainable future.
           </p>
         </div>
         <Button>
