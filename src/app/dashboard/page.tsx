@@ -21,6 +21,7 @@ const data = [
 ]
 
 export default function Dashboard() {
+  const devUrl = process.env.NEXT_PUBLIC_DEV_URL;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const { user, setUser } = useUser();
@@ -29,17 +30,30 @@ export default function Dashboard() {
   const [isActionEnabled, setIsActionEnabled] = useState(false);
 
   useEffect(() => {
-    //check if user data is stored in local storage
-    const storedUser = localStorage.getItem('user');
-    if (storedUser){
-      setUser(JSON.parse(storedUser));  //set user state from local storage
-    }
-    else {
-      //if no user is present in local storage, then redirect to sign in page
-      router.replace('/signin');
-    }
-  }, [setUser, router]);
+    const checkUser = async () => {
+      //check if user data is stored in local storage
+      const storedUser = localStorage.getItem('user');
 
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+
+        const response = await fetch(`${devUrl}/users/checkuser/${user?.email}`, {
+          method: 'GET',
+        });
+        if (response.ok) {
+          console.log("user exists!");
+          router.replace("/dashboard");
+        } else {
+          router.replace("/signin");
+        }
+      } else {
+        //if no user is present in local storage, then redirect to sign in page
+        router.replace('/signin');
+      }
+    };
+    checkUser();
+  }, [setUser, router]);
+  
   if (!user) {
     return <p>Loading...</p>;
   }
