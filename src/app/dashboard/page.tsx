@@ -2,6 +2,7 @@
 
 
 import { DarkThemeAiChatbot } from "@/components/dark-theme-ai-chatbot";
+import LitterLogsTable from "@/components/litterlogs/page";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
@@ -139,29 +140,6 @@ export default function Dashboard() {
           ))}
         </div>
 
-        {/* Chart */}
-        <Card className="bg-black border-none shadow-lg p-6">
-          <CardHeader>
-            <CardTitle className="text-xl font-semibold text-[#00ff9d]">Performance Overview</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="h-[300px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={data}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#333" />
-                  <XAxis dataKey="name" stroke="#ffffff" />
-                  <YAxis stroke="#ffffff" />
-                  <Tooltip
-                    contentStyle={{ backgroundColor: 'black', border: '1px solid rgba(255, 255, 255, 0.1)' }}
-                    labelStyle={{ color: '#ffffff' }}
-                  />
-                  <Line type="monotone" dataKey="value" stroke="#00ff9d" strokeWidth={2} dot={{ fill: '#00ff9d' }} />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          </CardContent>
-        </Card>
-
         {/*Map section*/}
         <Card className="bg-black border border-white/10 shadow-lg p-6">
         <CardHeader className="flex flex-row items-center justify-between">
@@ -195,13 +173,16 @@ export default function Dashboard() {
                   }`}
                   onClick={() => setIsActionEnabled(!isActionEnabled)}
                 >
-                  {isActionEnabled ? 'Disable Action' : 'Enable Action'}
+                  {isActionEnabled ? 'Cancel Pickup' : 'Schedule Pickup'}
                 </Button>
               </div>
             </div>
           </div>
         </CardContent>
         </Card>
+
+        {/*Log Table*/}
+        <LitterLogsTable />
 
         {/* Action Buttons */}
         <div className="flex justify-end space-x-4">
